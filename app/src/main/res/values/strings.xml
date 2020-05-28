@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Assingment</string>
+    <string name="show_product">Show Product</string>
+    <string name="create_product">Create Product</string>
+    <string name="title_activity_all_product">AllProductActivity</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+</resources>
