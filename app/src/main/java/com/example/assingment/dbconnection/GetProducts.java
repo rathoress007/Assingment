@@ -28,7 +28,6 @@ public class GetProducts extends AsyncTask<Void, Void, List<Product>> {
     @Override
     protected void onPostExecute(List<Product> products) {
         super.onPostExecute(products);
-          /*  TasksAdapter adapter = new TasksAdapter(MainActivity.this, tasks);
-            recyclerView.setAdapter(adapter);*/
+
     }
 }

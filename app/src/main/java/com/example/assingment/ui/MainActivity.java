@@ -36,18 +36,8 @@ public class MainActivity extends AppCompatActivity {
         btn_show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GetProducts products = new GetProducts(MainActivity.this);
-                try {
-                   List<Product>  productList = products.execute().get();
-                   Intent intent = new Intent(MainActivity.this,AllProductActivity.class);
-                   Bundle bundle = new Bundle();
-                   bundle.putParcelable("product", Parcels.wrap(productList));
-                   intent.putExtras(bundle);
+                  Intent intent = new Intent(MainActivity.this,AllProductActivity.class);
                    startActivity(intent);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
             }
         }); // button closed
 

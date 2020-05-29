@@ -4,6 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.example.assingment.adapter.ProductRecycleView;
+import com.example.assingment.dbconnection.CreateProduct;
+import com.example.assingment.dbconnection.DeleteProduct;
+import com.example.assingment.dbconnection.GetProducts;
+import com.example.assingment.dbconnection.UpdateProduct;
 import com.example.assingment.model.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -26,9 +30,12 @@ import com.example.assingment.R;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllProductActivity extends AppCompatActivity {
+
+    private ProductRecycleView productRecycleView;
 
     public AllProductActivity() {
 
@@ -41,17 +48,15 @@ public class AllProductActivity extends AppCompatActivity {
         RecyclerView list_recycler_view = findViewById(R.id.list_recycler_view);
 
         // get data from bundle
-        Parcelable parcelable = getIntent().getParcelableExtra("product");
-        List<Product> products = Parcels.unwrap(parcelable);
+        List<Product> products = new ArrayList<>();
 
         // set recycleView into adapter
         int numberOfColumns = 2;
         list_recycler_view.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 
-        ProductRecycleView productRecycleView = new ProductRecycleView(products, this, new ProductRecycleView.RecyclerViewClickListener() {
+         productRecycleView = new ProductRecycleView(products, this, new ProductRecycleView.RecyclerViewClickListener() {
             @Override
-            public void onClick(View view, final int position) {
-
+            public void onClick(View view, final int position, final Product product) {
                 //creating a popup menu
                 PopupMenu popup = new PopupMenu(AllProductActivity.this,view);
 
@@ -65,13 +70,20 @@ public class AllProductActivity extends AppCompatActivity {
 
                         switch (item.getItemId()) {
 
+                            // update item
                             case R.id.update:
 
-
+                                UpdateProduct updateProduct = new UpdateProduct(AllProductActivity.this,product);
+                                updateProduct.execute();
+                                getProducts();
                                 break;
 
+                             // delete item
                             case R.id.delete:
 
+                                DeleteProduct deleteProduct = new DeleteProduct(AllProductActivity.this,product);
+                                deleteProduct.execute();
+                                getProducts();
 
                                 break;
 
@@ -86,9 +98,21 @@ public class AllProductActivity extends AppCompatActivity {
             }
         });
 
-
         list_recycler_view.setAdapter(productRecycleView);
-        list_recycler_view.setHasFixedSize(true);
+
+        //get all products
+        getProducts();
+    }
+
+
+    private void getProducts(){
+        GetProducts products = new GetProducts(AllProductActivity.this);
+        try {
+            List<Product>  productList = products.execute().get();
+            productRecycleView.addItems(productList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

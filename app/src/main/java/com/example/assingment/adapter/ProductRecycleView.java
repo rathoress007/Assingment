@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.assingment.R;
 import com.example.assingment.dialog.ZoomImageDialog;
 import com.example.assingment.model.Product;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +27,7 @@ public class ProductRecycleView extends RecyclerView.Adapter<ProductRecycleView.
 
     public interface RecyclerViewClickListener {
 
-        void onClick(View view, int position);
+        void onClick(View view, int position,Product product);
 
     }
 
@@ -46,7 +48,7 @@ public class ProductRecycleView extends RecyclerView.Adapter<ProductRecycleView.
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
              // set product data into view
-             holder.txt_pname.setText(products.get(position).getName());
+             holder.txt_pname.setText(products.get(position).getName() + " Id: " +products.get(position).getId());
              holder.productImage.setImageResource(products.get(position).getProductPhoto());
              holder.txt_rate.setText("Sale Price: "+products.get(position).getSalePrice().toString());
              holder.txt_discription.setText(products.get(position).getDescription());
@@ -57,12 +59,12 @@ public class ProductRecycleView extends RecyclerView.Adapter<ProductRecycleView.
             @Override
             public void onClick(View view) {
 
-                mListener.onClick(view,position);
+                mListener.onClick(view,position,products.get(position));
 
             }
         }); // button closed
 
-        // click to zoom
+
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,9 +73,8 @@ public class ProductRecycleView extends RecyclerView.Adapter<ProductRecycleView.
                 ZoomImageDialog zoomImageDialog= ZoomImageDialog.newInstance(products.get(position).getProductPhoto());
                 zoomImageDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_FullScreen);
                 zoomImageDialog.show(fm,"ZoomImageDialog");
-
             }
-        });// button closed
+        });
     }
 
     @Override
@@ -96,16 +97,37 @@ public class ProductRecycleView extends RecyclerView.Adapter<ProductRecycleView.
             txt_rate = itemView.findViewById(R.id.txt_rate);
             txt_discription = itemView.findViewById(R.id.txt_discription);
             txt_reg_rate = itemView.findViewById(R.id.txt_reg_rate);
-            buttonViewOption = (TextView) itemView.findViewById(R.id.textViewOptions);
+            buttonViewOption =  itemView.findViewById(R.id.textViewOptions);
 
         }
 
         @Override
         public void onClick(View view) {
 
-            mListener.onClick(view,getAdapterPosition());
+            mListener.onClick(view,getAdapterPosition(),null);
         }
 
 
     }
+
+
+    // add item
+    public void addItems(List<Product> productItems) {
+
+        if(products == null){
+
+            products = new ArrayList<>();
+        }
+
+        products = productItems;
+
+        notifyDataSetChanged();
+    }
+
+
+    // add productImage
+    private void addProductImage(Product product,int position, ImageView imageView){
+
+    }
+
 }

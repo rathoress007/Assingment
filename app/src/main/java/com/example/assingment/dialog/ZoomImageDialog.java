@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import com.bumptech.glide.Glide;
 import com.example.assingment.R;
 import java.util.Objects;
 import android.util.Log;
